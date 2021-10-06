@@ -5,7 +5,7 @@ using LinearAlgebra, StaticArrays
 export MultiVector, Basis3D, ∧, ⋅
 
 struct MultiVector{T1 <: AbstractMatrix, T2 <: AbstractMatrix, basisnames, D}
-    M::T1
+    M :: T1
     basis::NamedTuple{basisnames, NTuple{D, T2}}
 end
 MultiVector(basis::NamedTuple) = M -> MultiVector(M, basis)
