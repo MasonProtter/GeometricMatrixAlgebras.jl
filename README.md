@@ -3,6 +3,14 @@
 This package is a playground for learning about Geometric Algebra (GA), and intendes to leverage Julia's powerful 
 Linear Algebra ecosystem to compute quntities in GA using matrices as a backend.
 
+This package is currently unregistered. To add it to a julia enviornment, do
+```julia
+using Pkg
+Pkg.add("https://github.com/MasonProtter/GeometricMatricAlgebras.jl")
+```
+
+___________
+
 ```julia
 julia> using GeometricMatrixAlgebras
 
@@ -38,7 +46,7 @@ julia> R'v*R # rotate v using R
 ```
 
 You can also wrap any matrix in an appropriate `MultiVector` given a basis, e.g.
-```
+```julia
 julia> basis3d
 (𝟙 = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1], σ1 = [0 0 1 0; 0 0 0 1; 1 0 0 0; 0 1 0 0], σ2 = [0 0 0 1; 0 0 -1 0; 0 -1 0 0; 1 0 0 0], σ3 = [1 0 0 0; 0 1 0 0; 0 0 -1 0; 0 0 0 -1], σ23 = [0 0 0 -1; 0 0 1 0; 0 -1 0 0; 1 0 0 0], σ31 = [0 0 1 0; 0 0 0 1; -1 0 0 0; 0 -1 0 0], σ12 = [0 -1 0 0; 1 0 0 0; 0 0 0 1; 0 0 -1 0], σ123 = [0 -1 0 0; 1 0 0 0; 0 0 0 -1; 0 0 1 0])
 
