@@ -2,7 +2,7 @@ module GeometricMatrixAlgebras
 
 using LinearAlgebra, StaticArrays
 
-export MultiVector, Basis3D, ⋅̂, ∧
+export MultiVector, Basis3D, ∧, ⋅
 
 struct MultiVector{T1 <: AbstractMatrix, T2 <: AbstractMatrix, basisnames, D}
     M::T1
@@ -38,16 +38,16 @@ function GAprint(io::IO, basis::NamedTuple{basisnames}, M::AbstractMatrix) where
     
     s = join(("$(elems[i]) $(basisnames[i])" for i in eachindex(elems) if elems[i] != 0), " + ")
     if s == ""
-        print("𝟘")
+        print(io, "𝟘")
     else
-        println(s)
+        print(io, s)
     end
 end
 
 
 
-(⋅̂)(a, b) = 1//2 * (a*b + b*a) #typed \cdot<TAB>\hat<TAB>. I didn't use ⋅ because it's already taken by LinearAlgebra.jl
-(∧)(a, b) = 1//2 * (a*b - b*a) #dont confuse this with ^, the power operator
+LinearAlgebra.:(⋅)(a::MultiVector, b::MultiVector) = 1//2 * (a*b + b*a) #typed \cdot<TAB>.
+               (∧)(a::MultiVector, b::MultiVector) = 1//2 * (a*b - b*a) #dont confuse this with ^, the power operator
 
 Base.:(*)(a::MultiVector, b::MultiVector) = MultiVector(a.M * b.M, a.basis)
 Base.:(*)(a::Number, b::MultiVector) = MultiVector(a * b.M, b.basis)

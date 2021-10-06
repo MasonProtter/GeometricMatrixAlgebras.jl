@@ -38,11 +38,21 @@ julia> σ2 * (𝟙 + σ2) * σ3
 julia> v = σ1 + σ2 # a vector pointing 45 degrees in the x-y plane
 1 σ1 + 1 σ2
 
-julia> R = exp(π/4 * (σ1*σ2)/2) # a rotor which rotates a vector an angle of π/2 in the σ1σ2 plane
+julia> R = exp(π/2 * (σ1*σ2)/2) # a rotor which rotates a vector an angle of π/2 in the σ1σ2 plane
 0.7071067811865476 𝟙 + 2.7755575615628914e-17 σ3 + 0.7071067811865475 σ12
 
-julia> R'v*R # rotate v using R
+julia> u = R'v*R # rotate v using R
 -0.9999999999999998 σ1 + 1.0000000000000002 σ2 + -5.551115123125783e-17 σ31
+```
+
+GeometricMatrixAlgebras.jl exports two operators, `⋅` and `∧` (typed `\cdot<TAB>` and `\wedge` respectively) for the inner and outer products.
+
+```julia 
+julia> v ⋅ u # u and v are orthogonal
+3.885780586188048e-16 𝟙
+
+julia> v ∧ u
+2.0 σ12
 ```
 
 You can also wrap any matrix in an appropriate `MultiVector` given a basis, e.g.
