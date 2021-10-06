@@ -9,7 +9,7 @@ begin
 	using Pkg
 	Pkg.activate()
 	# uncomment the following cell to download this package
-	# Pkg.add("https://github.com/MasonProtter/GeometricMatricAlgebras.jl")
+	# Pkg.add("https://github.com/MasonProtter/GeometricMatrixAlgebras.jl")
 end
 
 # ╔═╡ c45438a7-2d79-4293-8925-d6df8043f98b

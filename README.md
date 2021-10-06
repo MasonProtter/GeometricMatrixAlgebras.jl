@@ -6,7 +6,7 @@ Linear Algebra ecosystem to compute quntities in GA using matrices as a backend.
 This package is currently unregistered. To add it to a julia enviornment, do
 ```julia
 using Pkg
-Pkg.add("https://github.com/MasonProtter/GeometricMatricAlgebras.jl")
+Pkg.add("https://github.com/MasonProtter/GeometricMatrixAlgebras.jl")
 ```
 
 To see this readme as a Pluto notebook, click [here](https://masonprotter.github.io/GeometricMatrixAlgebras.jl/)
