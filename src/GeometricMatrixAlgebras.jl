@@ -61,6 +61,9 @@ Base.:(+)(a::MultiVector, b::MultiVector) = MultiVector(a.M + b.M, a.basis)
 Base.:(-)(a::MultiVector, b::MultiVector) = MultiVector(a.M - b.M, a.basis)
 Base.:(^)(a::MultiVector, b::MultiVector) = MultiVector(a.M ^ b.M, a.basis)
 
+Base.:(+)(a::MultiVector) = a
+Base.:(-)(a::MultiVector) = MultiVector(-a.M, a.basis)
+
 Base.:(^)(a::Number, b::MultiVector) = MultiVector(a ^ b.M, b.basis)
 Base.:(^)(a::MultiVector, b::Number) = MultiVector(a.M ^ b, a.basis)
 
@@ -70,5 +73,9 @@ Base.sin(a::MultiVector) = MultiVector(sin(a.M), a.basis)
 Base.cos(a::MultiVector) = MultiVector(cos(a.M), a.basis)
 Base.tan(a::MultiVector) = MultiVector(tan(a.M), a.basis)
 Base.adjoint(a::MultiVector) = MultiVector(a.M', a.basis)
+
+Base.isapprox(a::MultiVector, b::MultiVector; kwargs...) = isapprox(a.M, b.M; kwargs...)
+
+
 
 end # module
