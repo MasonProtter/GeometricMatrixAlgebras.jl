@@ -9,6 +9,7 @@ using Pkg
 Pkg.add("https://github.com/MasonProtter/GeometricMatricAlgebras.jl")
 ```
 
+To see this readme as a Pluto notebook, click [here](https://masonprotter.github.io/GeometricMatricAlgebras.jl/)
 ___________
 
 ```julia
