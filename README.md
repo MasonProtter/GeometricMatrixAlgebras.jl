@@ -43,7 +43,7 @@ julia> R = exp(π/2 * (σ1*σ2)/2) # a rotor which rotates a vector an angle of 
 0.7071067811865476 𝟙 + 2.7755575615628914e-17 σ3 + 0.7071067811865475 σ12
 
 julia> u = R'v*R # rotate v using R
--0.9999999999999998 σ1 + 1.0000000000000git rem002 σ2 + -5.551115123125783e-17 σ31
+-0.9999999999999998 σ1 + 1.0000000000000002 σ2 + -5.551115123125783e-17 σ31
 ```
 
 GeometricMatrixAlgebras.jl exports two operators, `⋅` and `∧` (typed `\cdot<TAB>` and `\wedge` respectively) for the inner and outer products.
