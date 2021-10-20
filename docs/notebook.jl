@@ -37,11 +37,11 @@ md"This package is a playground for learning about Geometric Algebra (GA), and i
 # ╔═╡ b95a10e2-9dbf-4f05-b234-940afe747f1b
 md"GeometricMatrixAlgebras.jl exports two operators, `⋅` and `∧` (typed `\cdot<TAB>` and `\wedge<TAB>` respectively) for the inner and outer products."
 
-# ╔═╡ c3113a5a-4c04-4410-bdc5-23063f1e8f5c
-md"The `Basis3D` submodule defines everything we need to work with a 3D real geometric algebra."
-
 # ╔═╡ dbf57e2d-f5ca-4d35-9715-f68212b9dd62
 names(GeometricMatrixAlgebras) #the names exported by the package
+
+# ╔═╡ c3113a5a-4c04-4410-bdc5-23063f1e8f5c
+md"The `Basis3D` submodule defines everything we need to work with a 3D real geometric algebra."
 
 # ╔═╡ 14527f6d-0141-4f07-9d51-a2f44fefdd97
 names(Basis3D) #the names exported by the Basis3D submodule
@@ -161,8 +161,28 @@ faster_basis2d()
 # ╔═╡ 0c649a95-bc54-4fa6-844c-695869a7c45c
 md"##### Contributions welcome!"
 
+# ╔═╡ 0d22229d-7f90-4a87-8032-e7eac22f72e3
+html"""
+<style>
+#launch_binder {
+    display: none;
+}
+body.disable_ui main {
+        max-width : 95%;
+    }
+@media screen and (min-width: 1081px) {
+    body.disable_ui main {
+        margin-left : 10px;
+        max-width : 72%;
+        align-self: flex-start;
+    }
+}
+</style>
+"""
+
 # ╔═╡ Cell order:
 # ╠═f85cfc5e-26cc-11ec-3e25-7fc30ba989a3
+# ╟─4b38ee8a-e21a-417d-9926-4814027dc3df
 # ╟─01483e51-f129-47bc-9b77-bc6bb9992790
 # ╟─ea8e3d31-53e5-4315-8ec7-a71420102547
 # ╠═c45438a7-2d79-4293-8925-d6df8043f98b
@@ -203,4 +223,4 @@ md"##### Contributions welcome!"
 # ╟─2d029832-b48d-420b-8bb6-f0f03c0d461a
 # ╠═5ffe0cb2-dd38-4912-925e-5636c936108e
 # ╟─0c649a95-bc54-4fa6-844c-695869a7c45c
-# ╟─4b38ee8a-e21a-417d-9926-4814027dc3df
+# ╠═0d22229d-7f90-4a87-8032-e7eac22f72e3
