@@ -8,4 +8,9 @@ using GeometricMatrixAlgebras.Basis3D
     @test R'v*R ≈ -σ1 + σ2
 end
 
+@testset "Vectors of basis elements" begin
+    @test [7, 11]' * [σ1, σ2] == (7σ1 + 11σ2)
+    @test [7 11] * [σ1 σ2]' == fill(7σ1 + 11σ2, 1, 1)
+end 
+
 # ...

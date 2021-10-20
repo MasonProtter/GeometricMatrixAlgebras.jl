@@ -69,10 +69,10 @@ for op ∈ (:+, :-)
         Base.$op(a::Number, b::MultiVector{B}) where {B} = MultiVector{B}($op(a * one(b.M), b.M))
     end
 end
-for f ∈ (:+, :-, :log, :exp, :sin, :cos, :tan, :adjoint)
+for f ∈ (:+, :-, :log, :exp, :sin, :cos, :tan, :adjoint, :conj, :zero, :one)
     @eval Base.$f(a::MultiVector{B}) where {B} = MultiVector{B}($f(a.M))
 end
-
+Base.conj!(a::AbstractArray{<:MultiVector}) = a .= conj.(a)
 
 # Base.:(*)(a::MultiVector, b::MultiVector) = MultiVector{basis(a)}(a.M * b.M)
 # Base.:(*)(a::Number, b::MultiVector) = MultiVector{basis(b)}(a * b.M)
