@@ -2,13 +2,15 @@ module GeometricMatrixAlgebras
 
 using LinearAlgebra, StaticArrays
 
-export MultiVector, Basis3D, ∧, ⋅
+export MultiVector, Basis3D, ∧, ⋅, basis
 
-struct MultiVector{T1 <: AbstractMatrix, T2 <: AbstractMatrix, basisnames, D}
-    M::T1
-    basis::NamedTuple{basisnames, NTuple{D, T2}}
+struct MultiVector{basis_maker, T <: AbstractMatrix}
+    M::T
+    MultiVector{basis_maker}(M::T) where {basis_maker, T <: AbstractMatrix} = new{basis_maker, T}(M)
 end
-MultiVector(basis::NamedTuple) = M -> MultiVector(M, basis)
+
+basis(::MultiVector{basis_maker}) where {basis_maker} = basis_maker()
+
 
 include("Basis3D.jl")
 
@@ -21,8 +23,8 @@ function decomp(basis::NamedTuple{basisnames}, M::AbstractMatrix) where {basisna
     end |> NamedTuple{basisnames}
 end 
 
-function Base.show(io::IO, x::MultiVector{T1, T2,  D, basisnames}) where {T1, T2, D, basisnames}
-    GAprint(io, x.basis, x.M)
+function Base.show(io::IO, x::MultiVector)
+    GAprint(io, basis(x), x.M)
 end
 
 GAprint(basis::NamedTuple) = M -> GAprint(stdout, basis, M)
@@ -49,32 +51,53 @@ end
 LinearAlgebra.:(⋅)(a::MultiVector, b::MultiVector) = 1//2 * (a*b + b*a) #typed \cdot<TAB>.
                (∧)(a::MultiVector, b::MultiVector) = 1//2 * (a*b - b*a) #dont confuse this with ^, the power operator
 
-Base.:(*)(a::MultiVector, b::MultiVector) = MultiVector(a.M * b.M, a.basis)
-Base.:(*)(a::Number, b::MultiVector) = MultiVector(a * b.M, b.basis)
-Base.:(*)(a::MultiVector, b::Number) = MultiVector(a.M * b, a.basis)
+Base.isequal(a::MultiVector{B}, b::MultiVector{B}) where {B} = isequal(a.M, b.M)
+Base.:(==)(a::MultiVector{B}, b::MultiVector{B}) where {B} = a.M == b.M
+Base.isapprox(a::MultiVector{B}, b::MultiVector{B}; kwargs...) where {B} = isapprox(a.M, b.M; kwargs...)
 
-Base.:(/)(a::MultiVector, b::MultiVector) = MultiVector(a.M / b.M, a.basis)
-Base.:(/)(a::Number, b::MultiVector) = MultiVector(a / b.M, b.basis)
-Base.:(/)(a::MultiVector, b::Number) = MultiVector(a.M / b, a.basis)
+for op ∈ (:*, :/, :^)
+    @eval begin
+        Base.$op(a::MultiVector{B}, b::MultiVector{B}) where {B} = MultiVector{B}($op(a.M, b.M))
+        Base.$op(a::MultiVector{B}, b::Number) where {B} = MultiVector{B}($op(a.M, b))
+        Base.$op(a::Number, b::MultiVector{B}) where {B} = MultiVector{B}($op(a, b.M))
+    end
+end
+for op ∈ (:+, :-)
+    @eval begin
+        Base.$op(a::MultiVector{B}, b::MultiVector{B}) where {B} = MultiVector{B}($op(a.M, b.M))
+        Base.$op(a::MultiVector{B}, b::Number) where {B} = MultiVector{B}($op(a.M, b * one(a.M)))
+        Base.$op(a::Number, b::MultiVector{B}) where {B} = MultiVector{B}($op(a * one(b.M), b.M))
+    end
+end
+for f ∈ (:+, :-, :log, :exp, :sin, :cos, :tan, :adjoint)
+    @eval Base.$f(a::MultiVector{B}) where {B} = MultiVector{B}($f(a.M))
+end
 
-Base.:(+)(a::MultiVector, b::MultiVector) = MultiVector(a.M + b.M, a.basis)
-Base.:(-)(a::MultiVector, b::MultiVector) = MultiVector(a.M - b.M, a.basis)
-Base.:(^)(a::MultiVector, b::MultiVector) = MultiVector(a.M ^ b.M, a.basis)
 
-Base.:(+)(a::MultiVector) = a
-Base.:(-)(a::MultiVector) = MultiVector(-a.M, a.basis)
+# Base.:(*)(a::MultiVector, b::MultiVector) = MultiVector{basis(a)}(a.M * b.M)
+# Base.:(*)(a::Number, b::MultiVector) = MultiVector{basis(b)}(a * b.M)
+# Base.:(*)(a::MultiVector, b::Number) = MultiVector{basis(a)}(a.M * b)
 
-Base.:(^)(a::Number, b::MultiVector) = MultiVector(a ^ b.M, b.basis)
-Base.:(^)(a::MultiVector, b::Number) = MultiVector(a.M ^ b, a.basis)
+# Base.:(/)(a::MultiVector, b::MultiVector) = MultiVector{basis(a)}(a.M / b.M)
+# Base.:(/)(a::Number, b::MultiVector) = MultiVector{basis(b)}(a / b.M)
+# Base.:(/)(a::MultiVector, b::Number) = MultiVector{basis(a)}(a.M / b)
 
-Base.log(a::MultiVector) = MultiVector(log(a.M), a.basis)
-Base.exp(a::MultiVector) = MultiVector(exp(a.M), a.basis)
-Base.sin(a::MultiVector) = MultiVector(sin(a.M), a.basis)
-Base.cos(a::MultiVector) = MultiVector(cos(a.M), a.basis)
-Base.tan(a::MultiVector) = MultiVector(tan(a.M), a.basis)
-Base.adjoint(a::MultiVector) = MultiVector(a.M', a.basis)
+# Base.:(+)(a::MultiVector, b::MultiVector) = MultiVector(a.M + b.M, a.basis)
+# Base.:(-)(a::MultiVector, b::MultiVector) = MultiVector(a.M - b.M, a.basis)
+# Base.:(^)(a::MultiVector, b::MultiVector) = MultiVector(a.M ^ b.M, a.basis)
 
-Base.isapprox(a::MultiVector, b::MultiVector; kwargs...) = isapprox(a.M, b.M; kwargs...)
+# Base.:(+)(a::MultiVector) = a
+# Base.:(-)(a::MultiVector) = MultiVector(-a.M, a.basis)
+
+# Base.:(^)(a::Number, b::MultiVector) = MultiVector(a ^ b.M, b.basis)
+# Base.:(^)(a::MultiVector, b::Number) = MultiVector(a.M ^ b, a.basis)
+
+# Base.log(a::MultiVector) = MultiVector(log(a.M), a.basis)
+# Base.exp(a::MultiVector) = MultiVector(exp(a.M), a.basis)
+# Base.sin(a::MultiVector) = MultiVector(sin(a.M), a.basis)
+# Base.cos(a::MultiVector) = MultiVector(cos(a.M), a.basis)
+# Base.tan(a::MultiVector) = MultiVector(tan(a.M), a.basis)
+# Base.adjoint(a::MultiVector) = MultiVector(a.M', a.basis)
 
 
 
