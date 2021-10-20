@@ -1,7 +1,7 @@
 name = "GeometricMatrixAlgebras"
 uuid = "6cba012c-fa21-4645-b88a-8002027d6abd"
 authors = ["MasonProtter <mason.protter@icloud.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
