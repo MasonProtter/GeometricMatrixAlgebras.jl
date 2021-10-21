@@ -4,7 +4,7 @@ using ..GeometricMatrixAlgebras: MultiVector, SA
 
 export basis3d, 𝟙, σ1, σ2, σ3, σ23, σ31, σ12, σ123
 
-basis3d() = let
+@generated function basis3d()
     
     𝟙 = SA[1 0 0 0
            0 1 0 0
